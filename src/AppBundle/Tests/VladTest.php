@@ -17,5 +17,7 @@ class VladTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(42, 42);
         $this->assertEquals(42, 42);
         $this->assertEquals(42, 42);
+
+
     }
 }
