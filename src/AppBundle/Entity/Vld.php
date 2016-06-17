@@ -26,4 +26,15 @@ class Vld
      * @ORM\Column(type="string", length=100)
      */
     private $name;
+
+    /**
+     * Vld constructor.
+     * @param $name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+
 }

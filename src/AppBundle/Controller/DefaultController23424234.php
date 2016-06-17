@@ -25,49 +25,21 @@ class DefaultController extends Controller
 
 
         $f = new FileFinder();
+        $list = $f->isFile()->inDir('asdasd')->getList();
 
-        $list = $f
-            ->isFile()
-//            ->inDir('asdasd')
-            ->inDir('/var/www/example.com/src/AppBundle/Service')
-            ->inDir('/var/www/example.com/src/AppBundle/Controller')
-//            ->inDir('/var/www/example.com/src/AppBundle/Controller')
-            ->match('/^.+\.php$/i')
-            ->match('/^.+\.txt/i')
-            ->getList();
-        $f2 = new FileFinder();
-        $list2= $f2
-            ->isFile()
-//            ->inDir('asdasd')
-            ->inDir('/var/www/example.com/src/AppBundle/Service')
-            ->inDir('/var/www/example.com/src/AppBundle/Controller')
-//            ->inDir('/var/www/example.com/src/AppBundle/Controller')
-            ->getList();
+        var_dump(iterator_to_array($list));exit;
 
-        $f3 = new FileFinder();
-        $list3= $f3
-            ->isDir()
-//            ->inDir('asdasd')
-            ->inDir('/var/www/example.com/src/AppBundle/Service')
-            ->inDir('/var/www/example.com/src/AppBundle/Controller')
-//            ->inDir('/var/www/example.com/src/AppBundle/Controller')
-            ->getList();
 
-        $fileList = new FileFinder();
-        $fileList
-            ->isFile()
-            ->inDir('/tmp');
-        $files = $fileList->getList();
-        var_dump($files);exit;
-        foreach ($files as $file) {
-            print $file . "\n";
-        }
 
-//
-//        var_dump(count($list));
-//        var_dump(count($list2));
-//        var_dump(count($list3), $list3);
-        exit;
+
+
+
+
+
+
+
+
+
 
 
         $total = 5;
@@ -75,20 +47,19 @@ class DefaultController extends Controller
         $urlBase = 'http://olx.ua/transport/legkovye-avtomobili/';
 
         $urls = [$urlBase];
-        for ($i = 2; $i <= $total; $i++) {
-            $urls[] = $urlBase . '?page=' . $i;
+        for($i = 2; $i<=$total; $i++){
+            $urls[] = $urlBase.'?page='.$i;
         }
 
-        foreach ($urls as $url) {
+        foreach($urls as $url) {
             $this->run($brand, $url);
-            $this->get('logger')->info('OK: ' . $url, ['url' => $url, 'memory' => memory_get_peak_usage(1)]);
+            $this->get('logger')->info('OK: '.$url, ['url' => $url, 'memory' => memory_get_peak_usage(1)]);
             gc_collect_cycles();
 //            sleep(1);
         }
 
 
-        var_dump('OK');
-        exit;
+        var_dump('OK');exit;
     }
 
     private function run($brand, $url)
@@ -104,8 +75,8 @@ class DefaultController extends Controller
 
         try {
             $response = $requestor->request($url);
-        } catch (\Exception $e) {
-            $this->get('logger')->addCritical('proxy return exception code' . $url, ['url' => $url, 'proxy' => $proxy, $e]);
+        }catch (\Exception $e){
+            $this->get('logger')->addCritical('proxy return exception code'.$url, ['url' => $url, 'proxy' => $proxy, $e]);
 //            $response = $requestor->request($url);
             return;
         }
@@ -145,7 +116,7 @@ class DefaultController extends Controller
             $dbOlx = $row[0];
 
 //            $dbOlx->setContent(file_get_contents($dbOlx->getUrl()));
-            $p = new Parser();
+            $p  = new Parser();
             $p->get($dbOlx);
 //            $dbOlx->setPrice($this->getPrice($dbOlx))->setYear($this->getYear($dbOlx));
             if (($i % $batchSize) === 0) {
